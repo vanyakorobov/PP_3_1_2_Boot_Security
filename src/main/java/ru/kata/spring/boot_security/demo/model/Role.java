@@ -15,7 +15,7 @@ public class Role implements GrantedAuthority {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "role_name")
+    @Column(name = "role_name", unique = true, nullable = false)
     private String roleName;
 
     public Long getId() {
@@ -55,9 +55,6 @@ public class Role implements GrantedAuthority {
 
     @Override
     public String toString() {
-        return "Role{" +
-                "id=" + id +
-                ", roleName='" + roleName + '\'' +
-                '}';
+        return roleName;
     }
 }

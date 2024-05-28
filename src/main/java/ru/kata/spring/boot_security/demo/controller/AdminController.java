@@ -27,26 +27,35 @@ public class AdminController {
     @PostMapping("/deleteUser")
     public String deleteUser(@RequestParam Long id) {
         userService.deleteUser(id);
-        return "redirect:/";
+        return "redirect:/admin";
     }
 
     @PostMapping("/edit")
     public String showEditUserForm(@RequestParam("id") long id, ModelMap model) {
         Optional<User> user = userService.getUserById(id);
-        model.addAttribute("user", user);
+        model.addAttribute("user", user.get());
         return "edit_user";
     }
 
     @PostMapping("/addUser")
-    public String addUser(@ModelAttribute User user) {
+    public String addUser(@ModelAttribute("user") User user) {
+        System.out.println(user);
         userService.saveUser(user);
-        return "redirect:/";
+        return "redirect:/admin";
     }
 
-    @GetMapping(value = "/")
+    @GetMapping(value = "")
     public String allUsers(ModelMap model, @ModelAttribute("user") User user) {
         List<User> users = userService.getAllUsers();
         model.addAttribute("users", users);
+        model.addAttribute("user", new User());
+        model.addAttribute("allRoles", roleService.getAllRoles());
         return "web";
     }
+
+    // @PostMapping("/update")
+    // public String updateUser(@ModelAttribute User user) {
+    //     userService.saveUser(user);
+    //     return "redirect:/admin";
+    // }
 }
